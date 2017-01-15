@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Newsletter Modul</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="style.css">
+         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="jquery-3.1.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  
+        <script>
+            var htmlArray = [];
+            var number = 1;
+            
+            $(document).ready(function(){
+                $(".addBanner").click(function(){
+                $(".bannerContainer").append("<div class='box'><div class='input'><label for='image'>src</label><input class='inputBox' type='url' name='image'></div><div class='input'><label for='name'>alt</label><input class='inputBox' type='text' name='name'></div><div class='input'><label for='url'>href</label><input class='inputBox' type='url' name='url'></div></div>");
+                });
+                
+                $(".addBook").click(function(){
+                $(".booksContainer").append("<div class='box'><div class='input'><label for='image'>src</label><input class='inputBox books' type='url' name='image'></div><div class='input'><label for='alt'>alt</label><input class='inputBox books' type='text' name='alt'></div><div class='input'><label for='url'>href</label><input class='inputBox books' type='url' name='url'></div><div class='input'><label for='title'>заглавие</label><input class='inputBox books' type='text' name='title'></div></div>");
+                });
+                
+                
+                $("#txtArea").on("keypress",function(e) {
+                    var key = e.keyCode;
+
+                    // If the user has pressed enter
+                    if (key == 13) {
+                        document.getElementById("txtArea").value = document.getElementById("txtArea").value + "<br>";
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                });
+            });
+            
+            $( function() {
+              $( "#sortable" ).sortable();
+              $( "#sortable" ).disableSelection();
+            } );
+
+            function appendBanner($name) {
+                document.getElementById('banner').style.display = 'none';
+
+                var src1= document.getElementsByClassName("inputBox")[0].value;
+                var alt1= document.getElementsByClassName("inputBox")[1].value;
+                var href1= document.getElementsByClassName("inputBox")[2].value;
+
+                var tr = '<tr class="ui-state-default" id="' + number + '"> <td class="img-wrap" style="border-bottom: 2px solid #dfdfdf; margin-top: 10px; padding-top:18px;" width="722" height="500" align="left"><span class="close" onclick="$(this).parent().hide()">&times;</span><a target="_blank" href="' + href1 + '"><img alt="' + alt1 + '" src="' + src1 + '"></a></td></tr>';
+
+                var html = {src1: src1, alt1: alt1, href1: href1, html: tr};
+                
+                document.getElementsByClassName("inputBox")[0].value = "";
+                document.getElementsByClassName("inputBox")[1].value = "";
+                document.getElementsByClassName("inputBox")[2].value = "";
+                
+                var src2= document.getElementsByClassName("inputBox")[3].value;
+                var alt2= document.getElementsByClassName("inputBox")[4].value;
+                var href2= document.getElementsByClassName("inputBox")[5].value;
+                
+                
+                if (src2  && alt2  && href2 ) {
+                    tr = '<tr class="ui-state-default" class="' + number + '"> <td class="img-wrap" width="722" height="500" style="border-bottom: 2px solid #dfdfdf; margin-top: 10px; padding-top:18px;" align="left"><span class="close" onclick="$(this).parent().hide()">&times;</span><a target="_blank" href="' + href1 + '"><img alt="' + alt1 + '" src="' + src1 + '"></a><span class="close" onclick="$(this).parent().hide()">&times;</span><a target="_blank" href="' + href2 + '"><img alt="' + alt2 + '" src="' + src2 + '"></a></td></tr>';
+                    html.src2 = src2;
+                    html.alt2 = alt2;
+                    html.href2 = href2;
+                    
+                    document.getElementsByClassName("inputBox")[3].value = "";
+                    document.getElementsByClassName("inputBox")[4].value = "";
+                    document.getElementsByClassName("inputBox")[5].value = "";
+                }
+                
+                htmlArray.push(html);
+                
+                $("tbody").append(tr);
+                number++;
+                //str = JSON.stringify(htmlArray, null, 4); 
+                //console.log(str); 
+                $('#bannerForm')[0].reset();
+            }
+
+            function appendSection($name) {
+                document.getElementById('section').style.display = 'none';
+
+                var sectionName = $('#sectionName').val();
+                var trSectionName = '<tr><td width="722" height="60" align="center"><span style="display: block; text-align: center; width: 722px; height: 60px; font-size: 29px; margin-top: 30px;">' + sectionName + '</span></td></tr>';
+                $("tbody").append(trSectionName); 
+                
+                var html = {sectionName: sectionName};
+                
+                var trImages = '<tr class="ui-state-default"><td class="img-wrap" width="722" align="center"><div id="' + number + '" style="margin-left: 40px;"></div></td></tr>';
+                $("tbody").append(trImages);
+                
+                var trTitles = '<tr><td style="text-decoration: none; color: #000000;" width="722" align="left"><div id="title' + number + '" style="margin-top: 10px; margin-left: 30px; text-decoration: none; color: #000000;"></div></td></tr>';
+                $("tbody").append(trTitles);
+                
+                var booksData = document.getElementsByClassName("books");
+                
+                for (var i = 0; i < booksData.length; i+=4) {
+                    var src = booksData[i].value;
+                    var alt = booksData[i + 1].value;
+                    var href = booksData[i + 2].value;
+                    var title = booksData[i + 3].value;
+                
+                    var spanImage = '<span style="float: left; width: 200px; display: block; margin-right: 20px; height: 240px;"><a style="text-decoration: none;" href="' + href + '" target="_blank"> <img src="' + src + '" alt="' + alt + '" width="200" height="240"> </a> </span>';
+                    $('#' + number + '').append(spanImage);
+                    var spanTitle = '<span style="float: left; text-align: center; width: 200px; font-size: 16px; margin-right: 20px; height: 50px; text-decoration: none; color: #000000;"> <a style="text-decoration: none !important;" href="' + href + '" target="_blank"> <span style="text-decoration: none; color: #000000;">' + title + '</span> </a> </span> ';
+                    $('#title' + number + '').append(spanTitle);
+                    
+                    var book = {src: src, alt: alt, href: href, title: title};
+                    html.i = book;
+                    
+                    booksData[i].value = "";
+                    booksData[i + 1].value = "";
+                    booksData[i + 2].value = "";
+                    booksData[i + 3].value = "";
+                }
+                
+                var lookAllHref = $('#lookAll').val();
+                
+                if (lookAllHref) {
+                    var trLookAll = '<tr><td style="padding-bottom: 30px;" width="722" align="left"><div style="margin-bottom: 10px;"><span style="border: 2px solid black; padding: 2px; float: left; text-align: center; font-size: 17px; height: 26px; line-height: 26px; width: 186px; margin-left: 268px;"> <a style="text-decoration: none !important;" href="' + lookAllHref + '"> <span style="color: #000000;">ВИЖ ВСИЧКИ</span> </a> </span></div></td></tr>';
+                    $("tbody").append(trLookAll);
+                    html.lookAllHref = lookAllHref;
+                }
+                
+                var italicText = $('#text').val();
+                
+                if (italicText) {
+                    var trItalicText = '<tr> <td style="border-bottom: 2px solid #dfdfdf; padding-bottom: 30px;" width="722" align="left"> <span style="float: right; text-align: center; width: 722px; font-size: 12px;"><i>'+ italicText+'</i></span></td></tr>';
+                    $("tbody").append(trItalicText);
+                    html.italicText = italicText;
+                }
+                
+                htmlArray.push(html);
+                number++;
+                $('#sectionForm')[0].reset();
+            }
+        </script>
+    </head>
+    
+    <body>
+        <div id="container">
+            <div class="buttons">
+                <div class="buttons">
+                    <select>
+                        <option selected>Добави елемент</option>
+                        <option id="selectBanner" value="banner" onclick="document.getElementById('banner').style.display='block'">Банер</option>
+                        <option id="selectSection" value="section" onclick="document.getElementById('section').style.display='block'">Секция</option>
+                    </select>
+                </div>
+                <div class="buttons">
+                    <button  class="safe" onclick="">Запази</button>
+                </div>
+            </div>
+            
+            <div id="banner" class="modal">
+                <div class="modal-content">
+                    <header class="container teal"> 
+                        <span onclick="document.getElementById('banner').style.display='none'" class="close">&times;</span>
+                        <h2>Банер</h2>
+                    </header>
+                    
+                    <div class="container">
+                        <form id="bannerForm" onsubmit="event.preventDefault();">
+                            <div class="bannerContainer">
+                                <div class="box">
+                                    <div class="input">
+                                        <label for="image">src</label>
+                                        <input class="inputBox" type="url" name="image">
+                                    </div>
+                                    <div class="input">
+                                        <label for="name">alt</label>
+                                        <input class="inputBox" type="text" name="name">
+                                    </div>
+                                    <div class="input">
+                                        <label for="url">href</label>
+                                        <input class="inputBox" type="url" name="url">
+                                    </div>
+                                </div> 
+                            </div> 
+                            
+                            <input class="addBanner" type="submit" value="добави банер">
+                        </form> 
+                            
+                        <input class="safe" type="submit" value="Запази" onclick="appendBanner('Банер')">
+                    </div>
+                </div>
+            </div>
+            
+            <div id="section" class="modal">
+                <div class="modal-content">
+                    <header class="container teal"> 
+                        <span onclick="document.getElementById('section').style.display='none'" class="close">&times;</span>
+                        <h2>Секция</h2>
+                    </header>
+                    
+                    <div class="container">
+                        <form id="sectionForm" onsubmit="event.preventDefault();">
+                            <div class="b">
+                                <div class="input">
+                                    <label for="title">Име</label>
+                                    <input class="inputBox" id="sectionName" type="text" name="title">
+                                </div>
+                            </div>
+                            
+                            <fieldset>
+                                <legend>Книги: </legend>
+                                <div class="booksContainer">
+                                    <div class="box">
+                                        <div class="input">
+                                            <label for="image">src</label>
+                                            <input class="inputBox books" type="url" name="image">
+                                        </div>
+                                        <div class="input">
+                                            <label for="alt">alt</label>
+                                            <input class="inputBox books" type="text" name="alt">
+                                        </div>
+                                        <div class="input">
+                                            <label for="url">href</label>
+                                            <input class="inputBox books" type="url" name="url">
+                                        </div>
+                                        <div class="input">
+                                            <label for="title">заглавие</label>
+                                            <input class="inputBox books" type="text" name="title">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <input class="addBook" type="submit" value="добави книга">
+                            </fieldset>
+                            
+                            <div class="b">
+                                Виж всички: <input type="checkbox" id="cbox1" value="first_checkbox">
+                                <div class="input">
+                                    <label for="url">href</label>
+                                    <input class="inputBox" id="lookAll" type="url" name="url">
+                                </div>
+                            </div>
+                            
+                            <div class="b">
+                                Валидна до: <input type="checkbox" id="cbox1" value="first_checkbox">
+                                <div class="input">
+                                    <label for="text">текст</label>
+                                    <input class="inputBox" id="text" type="text" name="text">
+                                </div>
+                            </div>
+                            
+                            <input class="safe" type="submit" value="Запази" onclick="appendSection('секция')">
+                        </form> 
+                    </div>
+                </div>
+            </div>
+            
+            <table  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="722" cellspacing="0" cellpadding="0" border="0"> 
+                <tbody id="sortable">
+                    <tr> 
+                    <td style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" valign="top" align="center"> 
+                        <span style="font-size: xx-small; font-family: Segoe UI,Lucida Sans Unicode,sans-serif; color: #555555;"> 
+                            Актуалните предложения Виж 
+                        </span>
+                        {NEWSLETTER_LINK[тук]}
+                        <span style="font-size: xx-small; font-family: Segoe UI,Lucida Sans Unicode,sans-serif; color: #555555;">.
+                        </span>
+                    </td> 
+                </tr> 
+
+                <tr> 
+                    <td width="722" align="left"> 
+                        <a target="_blank" href="https://www.helikon.bg/">
+                            <img alt="Книжарница Хеликон" src="http://i.helikon.bg/design/email/20161216/Logo_christmas.jpg" width="292" height="73">
+                        </a>
+                    </td> 
+                </tr> 
+
+                <tr> 
+                    <td style="clear: both; overflow: hidden; display: inline-block; line-height: 42px; text-decoration: none; color: #ffffff;" width="722" height="42" bgcolor="#45619b" align="center">
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px; font-weight: bold; text-decoration: none; color: #ffffff; float: left; display: inline-block; margin-right: 12px; margin-left: 23px;">
+                            <a href="https://www.helikon.bg/books/popular/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">КНИГИ</span></a>
+                        </span>  
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px; font-weight: bold; text-decoration: none; color: #ffffff; float: left; display: inline-block; margin-right: 12px;">
+                            <a href="https://www.helikon.bg/textbooks/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">УЧЕБНИЦИ</span></a>
+                        </span> 
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px; text-decoration: none; color: #ffffff; font-weight: bold; float: left; display: inline-block; margin-right: 12px;">
+                            <a href="https://www.helikon.bg/ebooks/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">Е-КНИГИ</span></a>
+                        </span>
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px; text-decoration: none; color: #ffffff; font-weight: bold; float: left; display: inline-block; margin-right: 12px;">
+                            <a href="https://www.helikon.bg/ezines/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">Е-СПИСАНИЯ</span></a>
+                        </span> 
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px;text-decoration: none; color: #ffffff; font-weight: bold; float: left; display: inline-block; margin-right: 12px;">
+                            <a href="https://www.helikon.bg/electronics/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">Е-ЧЕТЦИ</span></a>
+                        </span> 
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px;text-decoration: none; color: #ffffff; font-weight: bold; float: left; display: inline-block; margin-right: 12px;">
+                            <a href="https://www.helikon.bg/music/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">МУЗИКА</span></a>
+                        </span>
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px;text-decoration: none; color: #ffffff; font-weight: bold; float: left; display: inline-block; margin-right: 12px;">
+                            <a href="https://www.helikon.bg/gifts/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">ПОДАРЪЦИ</span></a>
+                        </span> 
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px;text-decoration: none; color: #ffffff; font-weight: bold; float: left; display: inline-block; margin-right: 12px;">
+                            <a href="https://www.helikon.bg/importbooks/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">ИЗДАНИЯ ОТ ЧУЖБИНА</span></a>
+                        </span> 
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px;text-decoration: none; color: #ffffff; font-weight: bold; float: left; display: inline-block; margin-right: 12px;">
+                            <a href="https://www.helikon.bg/coupons/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">ВАУЧЕРИ</span></a>
+                        </span> 
+                    </td> 
+                </tr> 
+            
+            </tbody>                
+        </table>
+            
+        </div>
+    </body>
+</html>
+

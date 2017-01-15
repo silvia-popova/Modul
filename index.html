@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Newsletter Modul</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="jquery-3.1.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>        
+        <script src="script.js"></script>
+    </head>
+    
+    <body>
+        <div id="container">
+            <div class="menu">
+                <div class="buttons">
+                    Добави елемент:
+                    <select>
+                        <option id="selectBanner" value="banner" onclick="document.getElementById('banner').style.display='block'">Банер</option>
+                        <option id="selectSectionName" value="sectionName" onclick="document.getElementById('sectionName').style.display='block'">Име на раздел</option>
+                        <option id="selectLookAll" value="lookAll" onclick="document.getElementById('lookAllDiv').style.display='block'">Виж всички</option>
+                        <option id="selectBooks" value="books" onclick="document.getElementById('booksDiv').style.display='block'">Книги</option>
+                        <option id="selectBooks" value="books" onclick="document.getElementById('textDiv').style.display='block'">Текст</option>
+                        <option id="selectLine" value="line" onclick="appendLine()">Линия</option>
+                    </select>
+                </div>
+                <div class="buttons" id="safeNewsletter">
+                    <button  class="safe" onclick="safeNewsletter()">Запази</button>
+                </div>
+            </div>
+            
+            <div id="banner" class="modal">
+                <div class="modal-content small">
+                    <header class="container teal"> 
+                        <span onclick="document.getElementById('banner').style.display='none'" class="close">&times;</span>
+                        <h2>Банер</h2>
+                    </header>
+                    
+                    <div class="container">
+                        <form id="bannerForm" onsubmit="event.preventDefault();">
+                            <div class="bannerContainer">
+                                <div class="box">
+                                    <div class="input">
+                                        <label for="image">src</label>
+                                        <input class="inputBox bannerInput" type="url" name="image">
+                                    </div>
+                                    <div class="input">
+                                        <label for="name">alt</label>
+                                        <input class="inputBox bannerInput" type="text" name="name">
+                                    </div>
+                                    <div class="input">
+                                        <label for="url">href</label>
+                                        <input class="inputBox bannerInput" type="url" name="url">
+                                    </div>
+                                </div> 
+                            </div> 
+                        </form> 
+                            
+                        <input class="safe" type="submit" value="Запази" onclick="appendBanner()">
+                    </div>
+                </div>
+            </div>
+            
+            <div id="bannerDivEdit" class="modal">
+                <div class="modal-content small">
+                    <header class="container teal"> 
+                        <span onclick="document.getElementById('bannerEdit').style.display='none'" class="close">&times;</span>
+                        <h2>Банер</h2>
+                    </header>
+                    
+                    <div class="container">
+                        <form id="bannerFormEdit" onsubmit="event.preventDefault();">
+                            <div class="bannerContainer">
+                                <div class="box">
+                                    <div class="input">
+                                        <label for="image">src</label>
+                                        <input class="inputBox" id="newBannerSrc" type="url" name="image">
+                                    </div>
+                                    <div class="input">
+                                        <label for="name">alt</label>
+                                        <input class="inputBox" id="newBannerAlt" type="text" name="name">
+                                    </div>
+                                    <div class="input">
+                                        <label for="url">href</label>
+                                        <input class="inputBox" id="newBannerHref" type="url" name="url">
+                                    </div>
+                                </div> 
+                            </div> 
+                        </form> 
+                            
+                        <input class="safe" type="submit" value="Запази" onclick="editBanner()">
+                    </div>
+                </div>
+            </div>
+            
+            <div id="sectionName" class="modal">
+                <div class="modal-content small">
+                    <header class="container teal"> 
+                        <span onclick="document.getElementById('sectionName').style.display='none'" class="close">&times;</span>
+                        <h2>Име на раздел</h2>
+                    </header>
+                    
+                    <div class="container">
+                        <form id="sectionNameForm" onsubmit="event.preventDefault();">
+                            <div class="b">
+                                <div class="input">
+                                    <label for="title">Име</label>
+                                    <input class="inputBox" id="title" type="text" name="title">
+                                </div>
+                            </div>
+                            
+                            <input class="safe" type="submit" value="Запази" onclick="appendSectionName()">
+                        </form> 
+                    </div>
+                </div>
+            </div>
+            
+            <div id="sectionNameEdit" class="modal">
+                <div class="modal-content small">
+                    <header class="container teal"> 
+                        <span onclick="document.getElementById('sectionName').style.display='none'" class="close">&times;</span>
+                        <h2>Име на раздел</h2>
+                    </header>
+                    
+                    <div class="container">
+                        <form id="sectionNameFormEdit" onsubmit="event.preventDefault();">
+                            <div class="b">
+                                <div class="input">
+                                    <label for="title">Име</label>
+                                    <input class="inputBox" value="" id="newTitle" type="text" name="title">
+                                </div>
+                            </div>
+                            
+                            <input class="safe" type="submit" value="Запази" onclick="editSectionName()">
+                        </form> 
+                    </div>
+                </div>
+            </div>
+            
+            <div id="lookAllDiv" class="modal">
+                <div class="modal-content small">
+                    <header class="container teal"> 
+                        <span onclick="document.getElementById('lookAllDiv').style.display='none'" class="close">&times;</span>
+                        <h2>Виж всички</h2>
+                    </header>
+                    
+                    <div class="container">
+                        <form id="lookAllForm" onsubmit="event.preventDefault();">
+                            <div class="b">
+                                <div class="input">
+                                    <label for="url">href</label>
+                                    <input class="inputBox" id="lookAllInput" type="url" name="url">
+                                </div>
+                            </div>
+                            
+                            <input class="safe" type="submit" value="Запази" onclick="appendLookAll()">
+                        </form> 
+                    </div>
+                </div>
+            </div>
+            
+            <div id="lookAllDivEdit" class="modal">
+                <div class="modal-content small">
+                    <header class="container teal"> 
+                        <span onclick="document.getElementById('lookAllDivEdit').style.display='none'" class="close">&times;</span>
+                        <h2>Виж всички</h2>
+                    </header>
+                    
+                    <div class="container">
+                        <form id="lookAllFormEdit" onsubmit="event.preventDefault();">
+                            <div class="b">
+                                <div class="input">
+                                    <label for="url">href</label>
+                                    <input class="inputBox" id="newLookAllInput" type="url" name="url">
+                                </div>
+                            </div>
+                            
+                            <input class="safe" type="submit" value="Запази" onclick="editLookAll()">
+                        </form> 
+                    </div>
+                </div>
+            </div>
+            
+            <div id="booksDiv" class="modal">
+                <div class="modal-content big">
+                    <header class="container teal"> 
+                        <span onclick="document.getElementById('booksDiv').style.display='none'" class="close">&times;</span>
+                        <h2>Книги</h2>
+                    </header>
+                    
+                    <div class="container">
+                        <form id="booksForm" onsubmit="event.preventDefault();">
+                            <fieldset>
+                                <legend></legend>
+                                <div class="booksContainer">
+                                    <div class="box">
+                                        <div class="input">
+                                            <label for="image">src</label>
+                                            <input class="inputBox booksInput" type="url" name="image">
+                                        </div>
+                                        <div class="input">
+                                            <label for="alt">alt</label>
+                                            <input class="inputBox booksInput" type="text" name="alt">
+                                        </div>
+                                        <div class="input">
+                                            <label for="url">href</label>
+                                            <input class="inputBox booksInput" type="url" name="url">
+                                        </div>
+                                        <div class="input">
+                                            <label for="title">заглавие</label>
+                                           <textarea class="inputBox booksInput" id="txtArea" name="title"></textarea>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <input class="addBook" type="submit" value="добави книга">
+                            </fieldset>
+                            
+                            <input class="safe" type="submit" value="Запази" onclick="appendBooks()">
+                        </form> 
+                    </div>
+                </div>
+            </div>
+            
+            <div id="textDiv" class="modal">
+                <div class="modal-content small">
+                    <header class="container teal"> 
+                        <span onclick="document.getElementById('textDiv').style.display='none'" class="close">&times;</span>
+                        <h2>Текст</h2>
+                    </header>
+                    
+                    <div class="container">
+                        <form id="textForm" onsubmit="event.preventDefault();">
+                            <div class="b">
+                                <div class="input">
+                                    <label for="italicText">текст</label>
+                                    <input class="inputBox" id="italicTextInput" type="text" name="italicText">
+                                </div>
+                            </div>
+                            
+                            <input class="safe" type="submit" value="Запази" onclick="appendText()">
+                        </form> 
+                    </div>
+                </div>
+            </div>
+            
+            <div id="textDivEdit" class="modal">
+                <div class="modal-content small">
+                    <header class="container teal"> 
+                        <span onclick="document.getElementById('textDivEdit').style.display='none'" class="close">&times;</span>
+                        <h2>Текст</h2>
+                    </header>
+                    
+                    <div class="container">
+                        <form id="textFormEdit" onsubmit="event.preventDefault();">
+                            <div class="b">
+                                <div class="input">
+                                    <label for="italicText">текст</label>
+                                    <input class="inputBox" id="newItalicTextInput" type="text" name="italicText">
+                                </div>
+                            </div>
+                            
+                            <input class="safe" type="submit" value="Запази" onclick="editText()">
+                        </form> 
+                    </div>
+                </div>
+            </div>
+            
+            <div id="edit" class="modal">
+                <div class="modal-content small">
+                    <header class="container teal"> 
+                        <span onclick="document.getElementById('edit').style.display='none'" class="close">&times;</span>
+                        <h2>Редактирай</h2>
+                    </header>
+                    
+                    <div class="container editContainer">
+                        <form id="editForm" onsubmit="event.preventDefault();">
+                            <div class="editContainer">
+                                <div class="box">
+                                    
+                                </div> 
+                            </div> 
+                        </form> 
+                        
+                        <input class="safe" type="submit" value="Запази" onclick="safeEditData()">
+                    </div>
+                </div>
+            </div>
+            
+            <table  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="722" cellspacing="0" cellpadding="0" border="0"> 
+                <tbody id="sortable" class="main">
+<!--                    <tr> 
+                        <td style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" valign="top" align="center"> 
+                            <span style="font-size: xx-small; font-family: Segoe UI,Lucida Sans Unicode,sans-serif; color: #555555;"> 
+                                Актуалните предложения Виж 
+                            </span>
+                            {NEWSLETTER_LINK[тук]}
+                            <span style="font-size: xx-small; font-family: Segoe UI,Lucida Sans Unicode,sans-serif; color: #555555;">.
+                            </span>
+                        </td> 
+                    </tr> -->
+
+                <tr> 
+                    <td width="722" align="left"> 
+                        <a target="_blank" href="https://www.helikon.bg/">
+                            <img alt="Книжарница Хеликон" src="http://i.helikon.bg/design/email/20161216/Logo_christmas.jpg" width="292" height="73">
+                        </a>
+                    </td> 
+                </tr> 
+
+                <tr> 
+                    <td style="clear: both; overflow: hidden; display: inline-block; line-height: 42px; text-decoration: none; color: #ffffff;" width="722" height="42" bgcolor="#45619b" align="center">
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px; font-weight: bold; text-decoration: none; color: #ffffff; float: left; display: inline-block; margin-right: 12px; margin-left: 23px;">
+                            <a href="https://www.helikon.bg/books/popular/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">КНИГИ</span></a>
+                        </span>  
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px; font-weight: bold; text-decoration: none; color: #ffffff; float: left; display: inline-block; margin-right: 12px;">
+                            <a href="https://www.helikon.bg/textbooks/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">УЧЕБНИЦИ</span></a>
+                        </span> 
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px; text-decoration: none; color: #ffffff; font-weight: bold; float: left; display: inline-block; margin-right: 12px;">
+                            <a href="https://www.helikon.bg/ebooks/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">Е-КНИГИ</span></a>
+                        </span>
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px; text-decoration: none; color: #ffffff; font-weight: bold; float: left; display: inline-block; margin-right: 12px;">
+                            <a href="https://www.helikon.bg/ezines/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">Е-СПИСАНИЯ</span></a>
+                        </span> 
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px;text-decoration: none; color: #ffffff; font-weight: bold; float: left; display: inline-block; margin-right: 12px;">
+                            <a href="https://www.helikon.bg/electronics/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">Е-ЧЕТЦИ</span></a>
+                        </span> 
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px;text-decoration: none; color: #ffffff; font-weight: bold; float: left; display: inline-block; margin-right: 12px;">
+                            <a href="https://www.helikon.bg/music/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">МУЗИКА</span></a>
+                        </span>
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px;text-decoration: none; color: #ffffff; font-weight: bold; float: left; display: inline-block; margin-right: 12px;">
+                            <a href="https://www.helikon.bg/gifts/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">ПОДАРЪЦИ</span></a>
+                        </span> 
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px;text-decoration: none; color: #ffffff; font-weight: bold; float: left; display: inline-block; margin-right: 12px;">
+                            <a href="https://www.helikon.bg/importbooks/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">ИЗДАНИЯ ОТ ЧУЖБИНА</span></a>
+                        </span> 
+                        <span style="font-family: arial,helvetica neue,helvetica,verdana,trebuchet ms,sans-serif; font-size: 11px;text-decoration: none; color: #ffffff; font-weight: bold; float: left; display: inline-block; margin-right: 12px;">
+                            <a href="https://www.helikon.bg/coupons/" target="_blank" style="text-decoration: none !important; color: #ffffff; -ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="color: #ffffff; text-decoration: none;">ВАУЧЕРИ</span></a>
+                        </span> 
+                    </td> 
+                </tr> 
+            
+            </tbody>                
+        </table>
+            
+        </div>
+    </body>
+</html>
